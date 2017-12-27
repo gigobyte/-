@@ -58,7 +58,7 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 			<div class="container">
 				<div class="header">
 					<div class="title">
-						${state.entries[0].title}
+						${state.articles[0].title}
 					</div>
 					<div class="close-button">
 						✖
@@ -66,7 +66,7 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 				</div>
 
 				<div class="content">
-					${state.entries[0].content.replace(feedPrefix, '')}
+					${state.articles[0].content.replace(feedPrefix, '')}
 				</div>
 			</div>
 		</body>
