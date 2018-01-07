@@ -1,4 +1,7 @@
-const feedPrefix = '<p><a rel="nofollow" href="https://otgovori.info">OTGOVORI.INFO</a></p>'
+const moment = require('moment')
+
+const trimContent = content => content.substring(0, 180).trim() + '...'
+const formatDate = date => moment(date).format('DD.MM.YYYY')
 
 const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 	<html>
@@ -13,33 +16,43 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 				margin: 0;
 			}
 
-			a {
+			.orange {
 				color: #ff5a00;
 			}
 
 			body {
 				font-family: 'Source Sans Pro', sans-serif;
 				margin: 0;
-			    border: 1px solid #c4c4c4;
 			}
 
 			.container {
-				width: 100%;
-				height: 100%;
-				display: flex;
-				flex-direction: column;
+				border: 1px solid #9ec4e0;
+			    height: calc(100% - 2px);
+    			width: calc(100% - 2px);
 			}
 
 			.header {
+				-webkit-user-select: none;
 				background-color: #228ddd;
 				box-shadow: 0 0px 0px 2px #228ddd, 0 2px 8px #228ddd;
 				display: flex;
+				justify-content: space-between;
+				padding: 4px;
+			}
+
+			.header-text {
+				color: white;
+				padding-left: 3px;
+				align-self: center;
+				font-family: Impact;
 			}
 
 			.title {
-				padding: 8px;
+				display: block;
 				font-weight: bold;
-				color: white;
+			    text-decoration: none;
+			    color: black;
+			    padding-top: 5px;
 			}
 
 			.close-button {
@@ -52,32 +65,59 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 			.content {
 				padding: 8px;
 			}
+
+			.content-text {
+				font-size: 13px;
+				line-height: 15px;
+			}
+
+			.date {
+				font-size: 14px;
+				padding-bottom: 8px;
+			}
 		</style>
 		
 		<body>
 			<div class="container">
 				<div class="header">
-					<div class="title">
-						${state.articles[0].title}
+					<div class="header-text">
+						ЗБУТ НОРМИ и ПРАКТИКА
 					</div>
-					<div class="close-button">
+
+					<div class="close-button" title="Затвори">
 						✖
 					</div>
 				</div>
 
 				<div class="content">
-					${state.articles[0].content.replace(feedPrefix, '')}
+					<a href="${state.articles[0].link}" class="title" title="Кликни, за да отвориш новината">
+						${state.articles[0].title}
+					</a>
+					<div class="date">
+						Публикувано на ${formatDate(state.articles[0].pubDate)}
+					</div>
+
+					<div class="content-text">
+						${trimContent(state.articles[0].contentSnippet)}
+					</div>
 				</div>
 			</div>
 		</body>
 
 		<script>
 			window.onload = () => {
-				const remote = require('electron').remote;
+				const { remote, shell } = require('electron');
 
 				document.querySelector('.close-button').addEventListener('click', () => {
 					remote.getCurrentWindow().close();
-				})
+				});
+
+				for (const link of document.querySelectorAll('a')) {
+					link.addEventListener('click', (e) => {
+						e.preventDefault();
+						shell.openExternal(e.target.getAttribute('href'));
+					})
+				}
 			}
 		</script>
 	</html>
