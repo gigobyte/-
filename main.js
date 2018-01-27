@@ -9,9 +9,7 @@ const store = new Store()
 
 let currentlyOpenedWindow
 
-const init = () => {
-	initTray();
-
+const loadData = () => {
 	parser.parseURL('https://shriekocg.blogspot.com/feeds/posts/default', (err, data) => {
 		if (err || data.feed.entries.length === 0) {
 			console.log(err)
@@ -21,26 +19,29 @@ const init = () => {
 		const lastReadArticle = store.get('lastReadArticle')
 		const { feed: { entries }} = data
 
-		console.log(entries)
+		if (lastReadArticle && lastReadArticle !== entries[0].id) {
+			const newWindow = openPopup({ articlesToDisplay: entries})
 
-		currentlyOpenedWindow = openPopup({ articlesToDisplay: entries })
+			if (currentlyOpenedWindow) {
+				currentlyOpenedWindow.close()
+			}
 
-		// if (lastReadArticle && lastReadArticle !== entries[0].id) {
-		// 	newWindow = openPopup({ articlesToDisplay: entries})
+			currentlyOpenedWindow = newWindow
 
-		// 	if (currentlyOpenedWindow) {
-		// 		currentlyOpenedWindow.close()
-		// 	}
+			currentlyOpenedWindow.on('close', () => {
+				currentlyOpenedWindow = null
+			})
+		}
 
-		// 	currentlyOpenedWindow = newWindow
-		// }
-
-		// store.set('lastReadArticle', entries[0].id)
+		store.set('lastReadArticle', entries[0].id)
 	})
 }
 
 app.on('ready', () => {
-	init()
+	loadData()
+	initTray()
 	new BrowserWindow({ show: false })
-	// setInterval(init, 5000)
+	setInterval(loadData, 5000)
 })
+
+module.exports = { currentlyOpenedWindow }

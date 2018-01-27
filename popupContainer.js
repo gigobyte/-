@@ -29,8 +29,6 @@ const openPopup = ({ articlesToDisplay }) => {
 
 	window.loadURL(html)
 
-	window.webContents.openDevTools()
-
 	return window;
 }
 
