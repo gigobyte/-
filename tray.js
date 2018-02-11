@@ -2,8 +2,10 @@ const { app, Tray, Menu, shell } = require('electron')
 const { openPopup } = require('./popupContainer')
 const parser = require('rss-parser')
 
+let tray = null
+
 const initTray = () => {
-	const tray = new Tray('./icon.ico')
+	tray = new Tray('./icon.ico')
 	const contextMenu = Menu.buildFromTemplate([
 		{label: 'Отвори сайта', click() { shell.openExternal('https://zbut.eu/') }},
 		{label: 'Изход', click() { app.exit() }}
@@ -19,7 +21,7 @@ const initTray = () => {
 			return
 		}
 
-		parser.parseURL('https://shriekocg.blogspot.com/feeds/posts/default', (err, data) => {
+		parser.parseURL('https://zbut.eu/feed/', (err, data) => {
 			if (err || data.feed.entries.length === 0) {
 				onTrayClick()
 				return

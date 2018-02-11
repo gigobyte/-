@@ -1,4 +1,5 @@
 const electron = require('electron')
+const AutoLaunch = require('auto-launch')
 const parser = require('rss-parser')
 const Store = require('electron-store')
 const { openPopup } = require('./popupContainer')
@@ -10,7 +11,7 @@ const store = new Store()
 let currentlyOpenedWindow
 
 const loadData = () => {
-	parser.parseURL('https://shriekocg.blogspot.com/feeds/posts/default', (err, data) => {
+	parser.parseURL('https://zbut.eu/feed/', (err, data) => {
 		if (err || data.feed.entries.length === 0) {
 			console.log(err)
 			return
@@ -37,11 +38,26 @@ const loadData = () => {
 	})
 }
 
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+	dialog.showMessageBox({type: 'info', title: 'ЗБУТ НОРМИ и ПРАКТИКА', message: 'Приложението вече работи.'})
+	return true
+})
+
+if (isSecondInstance) {
+	app.exit()
+}
+
 app.on('ready', () => {
 	loadData()
 	initTray()
 	new BrowserWindow({ show: false })
 	setInterval(loadData, 5000)
 })
+
+const autoLauncher = new AutoLaunch({
+	name: 'ЗБУТ НОРМИ и ПРАКТИКА'
+})
+
+autoLauncher.enable()
 
 module.exports = { currentlyOpenedWindow }

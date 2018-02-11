@@ -1,0 +1,9 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.zbut.app
+productName: ЗБУТ НОРМИ и ПРАКТИКА
+extraResources:
+  - from: ./build
+    to: ../
+electronVersion: 1.7.10
