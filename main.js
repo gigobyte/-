@@ -11,51 +11,59 @@ const store = new Store()
 let currentlyOpenedWindow
 
 const loadData = () => {
-	parser.parseURL('https://zbut.eu/feed/', (err, data) => {
-		if (err || data.feed.entries.length === 0) {
-			console.log(err)
-			return
-		}
+  parser.parseURL('https://zbut.eu/feed/', (err, data) => {
+    if (err || data.feed.entries.length === 0) {
+      console.log(err)
+      return
+    }
 
-		const lastReadArticle = store.get('lastReadArticle')
-		const { feed: { entries }} = data
+    const lastReadArticle = store.get('lastReadArticle')
+    const {
+      feed: { entries }
+    } = data
 
-		if (lastReadArticle && lastReadArticle !== entries[0].id) {
-			const newWindow = openPopup({ articlesToDisplay: entries})
+    if (lastReadArticle && lastReadArticle !== entries[0].id) {
+      const newWindow = openPopup({ articlesToDisplay: entries })
 
-			if (currentlyOpenedWindow) {
-				currentlyOpenedWindow.close()
-			}
+      if (currentlyOpenedWindow) {
+        currentlyOpenedWindow.close()
+      }
 
-			currentlyOpenedWindow = newWindow
+      currentlyOpenedWindow = newWindow
 
-			currentlyOpenedWindow.on('close', () => {
-				currentlyOpenedWindow = null
-			})
-		}
+      currentlyOpenedWindow.on('close', () => {
+        currentlyOpenedWindow = null
+      })
+    }
 
-		store.set('lastReadArticle', entries[0].id)
-	})
+    store.set('lastReadArticle', entries[0].id)
+  })
 }
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-	dialog.showMessageBox({type: 'info', title: 'ЗБУТ НОРМИ и ПРАКТИКА', message: 'Приложението вече работи.'})
-	return true
-})
+const lock = app.requestSingleInstanceLock()
+
+if (!lock) {
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'ЗБУТ НОРМИ и ПРАКТИКА',
+    message: 'Приложението вече работи.'
+  })
+}
 
 if (isSecondInstance) {
-	app.exit()
+  app.exit()
 }
 
 app.on('ready', () => {
-	loadData()
-	initTray()
-	new BrowserWindow({ show: false })
-	setInterval(loadData, 5000)
+  loadData()
+  initTray()
+  new BrowserWindow({ show: false })
+  setInterval(loadData, 5000)
 })
 
 const autoLauncher = new AutoLaunch({
-	name: 'ЗБУТ НОРМИ и ПРАКТИКА'
+  name: 'ЗБУТ НОРМИ и ПРАКТИКА',
+  path: '/Applications/ЗБУТ НОРМИ и ПРАКТИКА.app'
 })
 
 autoLauncher.enable()

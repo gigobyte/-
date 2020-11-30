@@ -1,11 +1,12 @@
 const { app, Tray, Menu, shell } = require('electron')
 const { openPopup } = require('./popupContainer')
 const parser = require('rss-parser')
+const path = require('path');
 
 let tray = null
 
 const initTray = () => {
-	tray = new Tray('./icon.ico')
+	tray = new Tray(path.join(__dirname, './icon.ico'))
 	const contextMenu = Menu.buildFromTemplate([
 		{label: 'Отвори сайта', click() { shell.openExternal('https://zbut.eu/') }},
 		{label: 'Изход', click() { app.exit() }}
