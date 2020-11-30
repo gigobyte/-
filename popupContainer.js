@@ -1,6 +1,5 @@
 const electron = require('electron')
-const { BrowserWindow } = electron
-const { generateNotificationContent } = require('./popup')
+const { BrowserWindow, shell, ipcMain } = electron
 
 const notification = {
   size: {
@@ -22,12 +21,28 @@ const openPopup = ({ articlesToDisplay }) => {
     width: notification.size.width,
     height: notification.size.height,
     x: display.workAreaSize.width - notification.size.width - 10,
-    y: display.workAreaSize.height - notification.size.height - 10
+    y: display.workAreaSize.height - notification.size.height - 10,
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
-  const html = generateNotificationContent({ articles: articlesToDisplay })
+  window.loadFile(`${__dirname}/popup.html`)
 
-  window.loadURL(html)
+  ipcMain.on('getArticles', (event) => {
+    event.returnValue = articlesToDisplay
+  })
+
+  ipcMain.on('openLink', (event, link) => {
+    shell.openExternal(link)
+  })
+
+  ipcMain.on('closeWindow', () => {
+    window.close()
+    ipcMain.removeAllListeners('closeWindow')
+    ipcMain.removeAllListeners('getArticles')
+    ipcMain.removeAllListeners('openLink')
+  })
 
   return window
 }

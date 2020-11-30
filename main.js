@@ -13,18 +13,16 @@ let currentlyOpenedWindow
 
 const loadData = () => {
   parser.parseURL('https://zbut.eu/feed/', (err, data) => {
-    if (err || data.feed.entries.length === 0) {
+    if (err || data.items.length === 0) {
       console.log(err)
       return
     }
 
     const lastReadArticle = store.get('lastReadArticle')
-    const {
-      feed: { entries }
-    } = data
+    const { items } = data
 
-    if (lastReadArticle && lastReadArticle !== entries[0].id) {
-      const newWindow = openPopup({ articlesToDisplay: entries })
+    if (lastReadArticle && lastReadArticle !== items[0].guid) {
+      const newWindow = openPopup({ articlesToDisplay: items })
 
       if (currentlyOpenedWindow) {
         currentlyOpenedWindow.close()
@@ -37,7 +35,7 @@ const loadData = () => {
       })
     }
 
-    store.set('lastReadArticle', entries[0].id)
+    store.set('lastReadArticle', items[0].guid)
   })
 }
 

@@ -1,8 +1,9 @@
 const { app, Tray, Menu, shell } = require('electron')
 const { openPopup } = require('./popupContainer')
-const parser = require('rss-parser')
+const Parser = require('rss-parser')
 const path = require('path')
 
+const parser = new Parser()
 let tray = null
 
 const initTray = () => {
@@ -33,15 +34,13 @@ const initTray = () => {
     }
 
     parser.parseURL('https://zbut.eu/feed/', (err, data) => {
-      if (err || data.feed.entries.length === 0) {
+      if (err || data.items.length === 0) {
         onTrayClick()
         return
       }
 
-      const {
-        feed: { entries }
-      } = data
-      const newWindow = openPopup({ articlesToDisplay: entries })
+      const { items } = data
+      const newWindow = openPopup({ articlesToDisplay: items })
       currentlyOpenedWindow = newWindow
 
       currentlyOpenedWindow.on('close', () => {
