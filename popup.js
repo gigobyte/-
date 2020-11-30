@@ -1,17 +1,20 @@
-const trimContent = content => content.substring(0, 180).trim() + '...'
-const formatDate = date => {
-	// format(date, 'DD.MM.YYYY')
-	date = new Date(date)
+const trimContent = (content) => content.substring(0, 180).trim() + '...'
+const formatDate = (date) => {
+  // format(date, 'DD.MM.YYYY')
+  date = new Date(date)
 
-	const day = String(date.getDate()).padStart(2, '0')
-	const month = String(date.getMonth() + 1).padStart(2, '0')
-	const year = date.getFullYear()
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
 
-	return `${day}.${month}.${year}`
+  return `${day}.${month}.${year}`
 }
-const formatTitle = title => title.substring(0,250).trim() + (title.length > 250 ? '...' : '')
+const formatTitle = (title) =>
+  title.substring(0, 250).trim() + (title.length > 250 ? '...' : '')
 
-const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
+const generateNotificationContent = (state) =>
+  'data:text/html;charset=utf-8,' +
+  `
 	<html>
 		<head>
 			<meta charset="utf-8">
@@ -126,9 +129,13 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 					</div>
 				</div>
 
-				${state.articles.map((article, i, array) => `
+				${state.articles
+          .map(
+            (article, i, array) => `
 					<div class="content" data-article-id=${i} >
-						<a href="${article.link}" class="title" title="Кликни, за да отвориш в браузъра">
+						<a href="${
+              article.link
+            }" class="title" title="Кликни, за да отвориш в браузъра">
 							${formatTitle(article.title)}
 						</a>
 						<div class="date">
@@ -136,26 +143,34 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 						</div>
 
 						<div class="pagination">
-							${i === 0
-								? `<div class="pagination-arrow disabled">
+							${
+                i === 0
+                  ? `<div class="pagination-arrow disabled">
 										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAIAAAA21aCOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABvSURBVChThdAxCsAgEERR7389wUYQLYKt2G5hJjiYNRj93cpjUU2bE5FSCgfV5IBCCCklzqrXdWStjTHySEU30M5phNbug5blnE2t1TnHg58eh534CE2999ccdvEdmu7eiwY9ONTp2SFQXIjDqLUb9pC2ajOtjrIAAAAASUVORK5CYII=" />
 									</div>`
-								: `<div class="pagination-arrow" onclick="displayArticle(${i - 1})">
+                  : `<div class="pagination-arrow" onclick="displayArticle(${
+                      i - 1
+                    })">
 										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAIAAAA21aCOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACHSURBVChTY/iPBl7d///tI5SNBFDV3T39v97q/9snUC4SQFIHVJQj+z9XDq86iKIoBrzq4IrwqUNWhBU1WAN9xvB/Q+v/aCZ0OWQEVff3z/819QilacL/d07+f2QpAl3a9f/PL7D7kJUS8C9cKQF1QABRmidPSB0QAJXum/3//TMoFw7+/wcANKWEpVV2aEkAAAAASUVORK5CYII=" />
 									</div>`
-							}
-							${i+1} от ${state.articles.length}
-							${i === array.length - 1
-								? `<div class="pagination-arrow disabled">
+              }
+							${i + 1} от ${state.articles.length}
+							${
+                i === array.length - 1
+                  ? `<div class="pagination-arrow disabled">
 										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAIAAAA21aCOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACOSURBVChTfZDBDgQRDEAVF9c5ufn/z3JzIEIiIpHYDjKxxu67tOWlWtBaI9+UUhhjnPNZd+iMC957rXWtddadg4fknDf17CGb+tNDVhWstcaY9zYPQgil1L9+A1w/xggppRDC2g8v8HDklFIp5XVdh//DMXAYTB7pzvvVgVW6yxE2Ngk5vOucA4BVIoR8AMXEVZoaIdXZAAAAAElFTkSuQmCC" />
 									</div>`
-								: `<div class="pagination-arrow" onclick="displayArticle(${i + 1})">
+                  : `<div class="pagination-arrow" onclick="displayArticle(${
+                      i + 1
+                    })">
 										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAIAAAA21aCOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC4SURBVChTY/z//z8DMvj7m+HnNwYufigXBpigNBz8+s4wLYbh1jEoFwYw1AHB1/cMvX5oSrGpA4Ivb9GU4lAHBKhKGf9PCmc4sRLCwQJ4hBmKNzHI6uA2DwKAbj2xCkgz/r95hOH1Q4ggCPz+zrCpk+HlbRCbkYnBNYshupeBkZEBGH4o4NvH/w3W/6MY/kcz/V+Q8//3T4gwDnvhJrGwQQSwqmNEUwQCEGMR4Pvn/0eWwq2Dgv//ATjUdoRYlAiBAAAAAElFTkSuQmCC" />
 									</div>`
-							}
+              }
 						</div>
 					</div>
-				`).join('')}
+				`
+          )
+          .join('')}
 			</div>
 		</body>
 
@@ -190,5 +205,5 @@ const generateNotificationContent = state => 'data:text/html;charset=utf-8,' + `
 `
 
 module.exports = {
-	generateNotificationContent
+  generateNotificationContent
 }

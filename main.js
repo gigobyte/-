@@ -1,12 +1,13 @@
 const electron = require('electron')
 const AutoLaunch = require('auto-launch')
-const parser = require('rss-parser')
+const Parser = require('rss-parser')
 const Store = require('electron-store')
 const { openPopup } = require('./popupContainer')
 const { initTray } = require('./tray')
 const { app, Tray, Menu, BrowserWindow, dialog } = electron
 
 const store = new Store()
+const parser = new Parser()
 
 let currentlyOpenedWindow
 
@@ -48,9 +49,6 @@ if (!lock) {
     title: 'ЗБУТ НОРМИ и ПРАКТИКА',
     message: 'Приложението вече работи.'
   })
-}
-
-if (isSecondInstance) {
   app.exit()
 }
 

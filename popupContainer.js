@@ -3,35 +3,35 @@ const { BrowserWindow } = electron
 const { generateNotificationContent } = require('./popup')
 
 const notification = {
-	size: {
-		width: 400,
-		height: 200
-	}
+  size: {
+    width: 400,
+    height: 200
+  }
 }
 
 const openPopup = ({ articlesToDisplay }) => {
-	const display = electron.screen.getPrimaryDisplay()
+  const display = electron.screen.getPrimaryDisplay()
 
-	const window = new BrowserWindow({
-		icon: './icon.ico',
-		title: 'ЗБУТ НОРМИ и ПРАКТИКА',
-		alwaysOnTop: true,
-		movable: false,
-		resizable: false,
-		frame: false,
-		width: notification.size.width,
-		height: notification.size.height,
-		x: display.workAreaSize.width - notification.size.width - 10,
-		y: display.workAreaSize.height - notification.size.height - 10
-	})
+  const window = new BrowserWindow({
+    icon: './icon.ico',
+    title: 'ЗБУТ НОРМИ и ПРАКТИКА',
+    alwaysOnTop: true,
+    movable: false,
+    resizable: false,
+    frame: false,
+    width: notification.size.width,
+    height: notification.size.height,
+    x: display.workAreaSize.width - notification.size.width - 10,
+    y: display.workAreaSize.height - notification.size.height - 10
+  })
 
-	const html = generateNotificationContent({ articles: articlesToDisplay })
+  const html = generateNotificationContent({ articles: articlesToDisplay })
 
-	window.loadURL(html)
+  window.loadURL(html)
 
-	return window;
+  return window
 }
 
 module.exports = {
-	openPopup
+  openPopup
 }
