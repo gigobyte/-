@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "build --dir"
+    "pack": "electron-builder --win --ia32 --x64"
   },
   "build": {
     "appId": "com.zbut.app",
@@ -21,7 +21,8 @@
   "author": "DOCEO EOOD",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "11.0.3"
+    "electron": "11.0.3",
+    "electron-builder": "22.9.1"
   },
   "dependencies": {
     "auto-launch": "^5.0.5",

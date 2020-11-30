@@ -4,7 +4,7 @@ const Parser = require('rss-parser')
 const Store = require('electron-store')
 const { openPopup } = require('./popupContainer')
 const { initTray } = require('./tray')
-const { app, Tray, Menu, BrowserWindow, dialog } = electron
+const { app, BrowserWindow, dialog } = electron
 
 const store = new Store()
 const parser = new Parser()
@@ -21,7 +21,7 @@ const loadData = () => {
     const lastReadArticle = store.get('lastReadArticle')
     const { items } = data
 
-    if (lastReadArticle && lastReadArticle !== items[0].guid) {
+    if (lastReadArticle !== items[0].guid) {
       const newWindow = openPopup({ articlesToDisplay: items })
 
       if (currentlyOpenedWindow) {
@@ -39,18 +39,21 @@ const loadData = () => {
   })
 }
 
-const lock = app.requestSingleInstanceLock()
-
-if (!lock) {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'ЗБУТ НОРМИ и ПРАКТИКА',
-    message: 'Приложението вече работи.'
-  })
-  app.exit()
-}
-
 app.on('ready', () => {
+  const lock = app.requestSingleInstanceLock()
+
+  if (!lock) {
+    app.quit()
+  }
+
+  app.on('second-instance', () => {
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'ЗБУТ НОРМИ и ПРАКТИКА',
+      message: 'Приложението вече работи.'
+    })
+  })
+
   loadData()
   initTray()
   new BrowserWindow({ show: false })
