@@ -4,28 +4,64 @@
   <title>ЗБУТ НОРМИ и ПРАКТИКА - Автоматично ъпдейтване</title>
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet"> 
   <style>
-    body {
+    html, body {
       font-family: 'Source Sans Pro', sans-serif;
       width: 100%;
       height: 100%;
+      margin: 0;
     }
 
     #messages {
       width: 100%;
-      height: 100%;
+      padding-top: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+    }
+
+    #messages-text {
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    #messages img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .header {
+      background-color: #228ddd;
+      box-shadow: 0 0px 0px 2px #228ddd, 0 2px 8px #228ddd;
+      display: flex;
+      justify-content: space-between;
+      padding: 4px;
+      height: 26px;
+    }
+
+    .header-text {
+      color: white;
+      padding-left: 3px;
+      align-self: center;
+      font-family: Impact;
     }
   </style>
 </head>
 <body>
-  <div id="messages"></div>
+  <div class="header">
+    <div class="header-text">
+      ЗБУТ НОРМИ и ПРАКТИКА
+    </div>
+  </div>
+  <div id="messages">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNiAzNiI+PHBhdGggZmlsbD0iIzI2OSIgZD0iTTM2IDMyYzAgMi4yMDktMS43OTEgNC00IDRINGMtMi4yMDkgMC00LTEuNzkxLTQtNFY0YzAtMi4yMDkgMS43OTEtNCA0LTRoMjhjMi4yMDkgMCA0IDEuNzkxIDQgNHYyOHoiLz48cGF0aCBmaWxsPSIjNTVBQ0VFIiBkPSJNMTggMi4yNDlMMjEuNzUxIDZIMjd2NS4yNDlMMzAuNzUxIDE1IDI3IDE4Ljc1MVYyNGgtNS4yNDlMMTggMjcuNzUxIDE0LjI0OSAyNEg5di01LjI0OUw1LjI0OSAxNSA5IDExLjI0OVY2aDUuMjQ5eiIvPjxwYXRoIGZpbGw9IiNGRkQ5ODMiIGQ9Ik0xNSAxNXptMy0xMC40MDZsMi4yMzQgNS4wNjkgNC44NTItMS40MTctMS40MTggNC44NTEgNi40ODYgMi4yMzUtNi40ODYgMi4yMzQgMS40MTggNC44NTFMMjAuMjM0IDIxIDE4IDMzLjE1NCAxNS43NjUgMjFsLTQuODUgMS40MTcgMS40MTctNC44NTEtNi40ODctMi4yMzQgNi40ODctMi4yMzUtMS40MTctNC44NTEgNC44NSAxLjQxN3oiLz48Y2lyY2xlIGZpbGw9IiNGNUY4RkEiIGN4PSIxOCIgY3k9IjE1IiByPSIzIi8+PHBhdGggZmlsbD0iI0ZGQ0M0RCIgZD0iTTkuOTk5IDEzYy0uMTkgMC0uMzgzLS4wNTQtLjU1NC0uMTY4bC02LTRjLS40NTktLjMwNi0uNTgzLS45MjctLjI3Ny0xLjM4Ny4zMDYtLjQ2LjkyNy0uNTg0IDEuMzg3LS4yNzdsNiA0Yy40Ni4zMDYuNTgzLjkyNy4yNzcgMS4zODctLjE5My4yODktLjUxLjQ0NS0uODMzLjQ0NXptMTYuMDAyIDBjLS4zMjMgMC0uNjQxLS4xNTYtLjgzMy0uNDQ1LS4zMDctLjQ2LS4xODMtMS4wODEuMjc3LTEuMzg3bDYtNGMuNDYtLjMwNyAxLjA4MS0uMTgzIDEuMzg3LjI3Ny4zMDcuNDU5LjE4MyAxLjA4MS0uMjc3IDEuMzg3bC02IDRjLS4xNzEuMTE0LS4zNjQuMTY4LS41NTQuMTY4em0tMjIgMTFjLS4zMjMgMC0uNjQtLjE1Ni0uODMzLS40NDUtLjMwNi0uNDYtLjE4Mi0xLjA4LjI3Ny0xLjM4N2w2LTRjLjQ1OS0uMzA4IDEuMDgtLjE4MyAxLjM4Ny4yNzcuMzA2LjQ2LjE4MiAxLjA4LS4yNzcgMS4zODdsLTYgNGMtLjE3MS4xMTMtLjM2NC4xNjgtLjU1NC4xNjh6bTI4Ljk5OCAwYy0uMTY4IDAtLjMzOS0uMDQyLS40OTUtLjEzMmwtNy00Yy0uNDc5LS4yNzQtLjY0Ni0uODg1LS4zNzItMS4zNjQuMjc0LS40NzkuODg0LS42NDcgMS4zNjQtLjM3Mmw3IDRjLjQ3OS4yNzQuNjQ2Ljg4NS4zNzIgMS4zNjQtLjE4NC4zMjMtLjUyMS41MDQtLjg2OS41MDR6TTEwIDM0Yy0uMTM2IDAtLjI3My0uMDI3LS40MDYtLjA4Ni0uNTA0LS4yMjUtLjczMi0uODE2LS41MDctMS4zMmw0LTljLjIyNC0uNTA0LjgxNC0uNzMzIDEuMzItLjUwOC41MDQuMjI1LjczMi44MTYuNTA3IDEuMzJsLTQgOWMtLjE2Ni4zNzItLjUzMi41OTQtLjkxNC41OTR6bTE2LjAwMSAwYy0uMzg0IDAtLjc0OS0uMjIxLS45MTUtLjU5NGwtNC05Yy0uMjI0LS41MDUuMDAzLTEuMDk2LjUwOC0xLjMyLjUwNi0uMjI0IDEuMDk2LjAwNCAxLjMyLjUwOGw0IDljLjIyNC41MDUtLjAwMyAxLjA5Ni0uNTA4IDEuMzItLjEzMi4wNTktLjI2OS4wODYtLjQwNS4wODZ6bS0xMS0yNmMtLjM2NyAwLS43Mi0uMjAyLS44OTYtLjU1M2wtMi00Yy0uMjQ3LS40OTQtLjA0Ny0xLjA5NS40NDctMS4zNDIuNDk1LS4yNDcgMS4wOTUtLjA0NiAxLjM0Mi40NDdsMiA0Yy4yNDcuNDk0LjA0NyAxLjA5NS0uNDQ3IDEuMzQyLS4xNDMuMDcyLS4yOTYuMTA2LS40NDYuMTA2em01Ljk5OCAwYy0uMTUgMC0uMzAzLS4wMzQtLjQ0Ni0uMTA1LS40OTQtLjI0Ny0uNjk0LS44NDgtLjQ0Ny0xLjM0MmwyLTRjLjI0OC0uNDk1Ljg0Ny0uNjk1IDEuMzQyLS40NDcuNDk0LjI0Ny42OTQuODQ4LjQ0NyAxLjM0MmwtMiA0Yy0uMTc2LjM1LS41MjkuNTUyLS44OTYuNTUyeiIvPjwvc3ZnPg==" />
+    <div id="messages-text" />
+  </div>
 <script>
 // Listen for messages
 const {ipcRenderer} = require('electron');
 ipcRenderer.on('message', function(event, text) {
-  var container = document.getElementById('messages');
+  var container = document.getElementById('messages-text');
   container.innerHTML = text;
 })
 </script>
