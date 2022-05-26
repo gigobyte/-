@@ -8,6 +8,7 @@ const { autoUpdater } = require('electron-updater')
 
 const store = new Store()
 const parser = new Parser()
+let updateWin
 
 let currentlyOpenedWindow
 
@@ -38,6 +39,34 @@ const loadData = () => {
     store.set('lastReadArticle', items[0].guid)
   })
 }
+
+autoUpdater.on('update-available', () => {
+  updateWin = new BrowserWindow({
+    width: 500,
+    height: 200,
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  })
+  updateWin.on('closed', () => {
+    updateWin = null
+  })
+  updateWin.loadURL(`file://${__dirname}/version.html`)
+})
+
+autoUpdater.on('download-progress', (progressObj) => {
+  const text = `Налична е нова версия на приложението. Моля изчакайте да бъде изтеглена и автоматично инсталирана. (${progressObj.percent}%)`
+  updateWin.webContents.send('message', text)
+})
+
+autoUpdater.on('update-downloaded', () => {
+  updateWin.webContents.send('message', 'Новата версия е изтеглена успешно!')
+  setTimeout(() => {
+    autoUpdater.quitAndInstall()
+  }, 1000)
+})
 
 app.on('ready', () => {
   autoUpdater.checkForUpdatesAndNotify()

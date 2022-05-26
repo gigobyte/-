@@ -11,7 +11,7 @@ const initTray = () => {
   tray = new Tray(path.join(__dirname, './icon.ico'))
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Версия: v1.0.1',
+      label: 'Версия: v1.0.0',
       enabled: false
     },
     {
