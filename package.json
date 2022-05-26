@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "electron-builder --win --ia32 --x64"
+    "pack": "electron-builder --win --ia32 --x64",
+    "release": "electron-builder --win --ia32 --x64 --publish always"
   },
   "build": {
     "appId": "com.zbut.app",
@@ -14,10 +15,17 @@
       "app": "."
     },
     "win": {
-      "icon": "icon.ico"
+      "icon": "icon.ico",
+      "publish": [
+        "github"
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "releaseType": "release"
     }
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/gigobyte/-",
   "author": "DOCEO EOOD",
   "license": "CC0-1.0",
   "devDependencies": {

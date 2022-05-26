@@ -4,6 +4,7 @@ const Store = require('electron-store')
 const { openPopup } = require('./popupContainer')
 const { initTray } = require('./tray')
 const { app, BrowserWindow, dialog } = electron
+const { autoUpdater } = require('electron-updater')
 
 const store = new Store()
 const parser = new Parser()
@@ -39,6 +40,7 @@ const loadData = () => {
 }
 
 app.on('ready', () => {
+  autoUpdater.checkForUpdatesAndNotify()
   const lock = app.requestSingleInstanceLock()
 
   if (!lock) {
