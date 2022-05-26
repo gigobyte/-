@@ -1,6 +1,6 @@
 {
   "name": "zbut-normi-i-praktika",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "electron-store": "8.0.1",
+    "electron-updater": "5.0.1",
     "rss-parser": "3.12.0"
   }
 }
