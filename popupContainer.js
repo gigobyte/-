@@ -23,7 +23,8 @@ const openPopup = ({ articlesToDisplay }) => {
     x: display.workAreaSize.width - notification.size.width - 10,
     y: display.workAreaSize.height - notification.size.height - 10,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
 
