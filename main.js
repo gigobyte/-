@@ -1,5 +1,4 @@
 const electron = require('electron')
-const AutoLaunch = require('auto-launch')
 const Parser = require('rss-parser')
 const Store = require('electron-store')
 const { openPopup } = require('./popupContainer')
@@ -54,17 +53,14 @@ app.on('ready', () => {
     })
   })
 
+  app.setLoginItemSettings({
+    openAtLogin: true
+  })
+
   loadData()
   initTray()
   new BrowserWindow({ show: false })
-  setInterval(loadData, 5000)
+  setInterval(loadData, 3 * 60 * 60 * 1000)
 })
-
-const autoLauncher = new AutoLaunch({
-  name: 'ЗБУТ НОРМИ и ПРАКТИКА',
-  path: '/Applications/ЗБУТ НОРМИ и ПРАКТИКА.app'
-})
-
-autoLauncher.enable()
 
 module.exports = { currentlyOpenedWindow }
